@@ -12,7 +12,7 @@ public class Product {
     private int stockQty;
     private String category;
     private String imageUrl;
-    private LocalDateTime createdAt;
+    private transient LocalDateTime createdAt;
 
     public Product() {}
 

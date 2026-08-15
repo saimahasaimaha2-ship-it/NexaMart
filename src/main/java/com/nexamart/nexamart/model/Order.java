@@ -9,7 +9,7 @@ public class Order {
     private Long buyerId;
     private String status;
     private BigDecimal totalAmount;
-    private LocalDateTime createdAt;
+    private transient LocalDateTime createdAt;
     private List<OrderItem> items;
 
     public Long getId() { return id; }

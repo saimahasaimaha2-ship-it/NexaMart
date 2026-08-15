@@ -34,7 +34,7 @@ public class CartServlet extends HttpServlet {
         resp.setContentType("application/json");
         Long userId = (Long) req.getSession().getAttribute("userId");
         Map<?, ?> body = JsonUtil.GSON.fromJson(req.getReader(), Map.class);
-        Long productId = Long.valueOf(String.valueOf(body.get("productId")));
+      Long productId = (long) Double.parseDouble(String.valueOf(body.get("productId")));
         int quantity = (int) Double.parseDouble(String.valueOf(body.get("quantity")));
 
         try {
