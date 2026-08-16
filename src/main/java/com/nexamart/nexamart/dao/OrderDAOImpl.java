@@ -49,6 +49,7 @@ public class OrderDAOImpl implements OrderDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 List<Order> orders = new ArrayList<>();
                 while (rs.next()) orders.add(mapOrder(rs));
+                for (Order o : orders) { o.setItems(findItemsByOrderId(o.getId())); }
                 return orders;
             }
         }
@@ -80,5 +81,27 @@ public class OrderDAOImpl implements OrderDAO {
         Timestamp ts = rs.getTimestamp("created_at");
         if (ts != null) o.setCreatedAt(LocalDateTime.ofInstant(ts.toInstant(), ZoneId.systemDefault()));
         return o;
+    }
+    private List<OrderItem> findItemsByOrderId(Long orderId) throws Exception {
+        String sql = "SELECT oi.*, p.name AS product_name FROM order_items oi " +
+                     "JOIN products p ON p.id = oi.product_id WHERE oi.order_id = ?";
+        try (Connection conn = DataSourceListener.getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<OrderItem> items = new ArrayList<>();
+                while (rs.next()) {
+                    OrderItem oi = new OrderItem();
+                    oi.setId(rs.getLong("id"));
+                    oi.setOrderId(rs.getLong("order_id"));
+                    oi.setProductId(rs.getLong("product_id"));
+                    oi.setQuantity(rs.getInt("quantity"));
+                    oi.setUnitPrice(rs.getBigDecimal("unit_price"));
+                    oi.setProductName(rs.getString("product_name"));
+                    items.add(oi);
+                }
+                return items;
+            }
+        }
     }
 }
