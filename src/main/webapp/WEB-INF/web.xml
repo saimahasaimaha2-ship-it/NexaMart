@@ -35,6 +35,10 @@
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/api/v1/orders/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/v1/admin/*</url-pattern>
+    </filter-mapping>
 
     <session-config>
         <session-timeout>30</session-timeout>
