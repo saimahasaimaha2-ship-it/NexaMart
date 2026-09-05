@@ -15,10 +15,19 @@ public class DataSourceListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        try (InputStream in = getClass().getClassLoader()
-                .getResourceAsStream("config.properties")) {
+                try {
             Properties props = new Properties();
-            if (in != null) props.load(in);
+            java.io.File overrideFile = new java.io.File("/config-override.properties");
+            if (overrideFile.exists()) {
+                try (InputStream override = new java.io.FileInputStream(overrideFile)) {
+                    props.load(override);
+                }
+            } else {
+                try (InputStream in = getClass().getClassLoader()
+                        .getResourceAsStream("config.properties")) {
+                    if (in != null) props.load(in);
+                }
+            }
 
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(props.getProperty("db.url", "jdbc:h2:mem:nexamart;DB_CLOSE_DELAY=-1"));
