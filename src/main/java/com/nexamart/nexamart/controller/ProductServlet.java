@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/api/v1/products")
+@WebServlet("/api/v1/products/*")
 public class ProductServlet extends HttpServlet {
     private final ProductService productService = new ProductService();
 
@@ -57,6 +57,72 @@ public class ProductServlet extends HttpServlet {
             resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.ok(created)));
         } catch (ServiceException se) {
             resp.setStatus(se.getCode().equals("VALIDATION_ERROR") ? 400 : 500);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail(se.getCode(), se.getMessage())));
+        }
+    }
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        HttpSession session = req.getSession(false);
+        if (session == null || !"SELLER".equals(session.getAttribute("role"))) {
+            resp.setStatus(403);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail("FORBIDDEN", "Seller role required")));
+            return;
+        }
+        Long sellerId = (Long) session.getAttribute("userId");
+
+        String pathInfo = req.getPathInfo();
+        if (pathInfo == null || pathInfo.length() < 2) {
+            resp.setStatus(400);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail("VALIDATION_ERROR", "Product id required in URL")));
+            return;
+        }
+        Long productId = Long.valueOf(pathInfo.substring(1));
+
+        Map<?, ?> body = JsonUtil.GSON.fromJson(req.getReader(), Map.class);
+        Product p = new Product();
+        p.setName((String) body.get("name"));
+        p.setDescription((String) body.get("description"));
+        p.setPrice(new BigDecimal(String.valueOf(body.get("price"))));
+        p.setStockQty((int) Double.parseDouble(String.valueOf(body.get("stockQty"))));
+        p.setCategory((String) body.get("category"));
+        p.setImageUrl((String) body.get("imageUrl"));
+
+        try {
+            Product updated = productService.updateListing(sellerId, productId, p);
+            resp.setStatus(200);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.ok(updated)));
+        } catch (ServiceException se) {
+            resp.setStatus(se.getCode().equals("NOT_FOUND") ? 404 : se.getCode().equals("VALIDATION_ERROR") ? 400 : 500);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail(se.getCode(), se.getMessage())));
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        HttpSession session = req.getSession(false);
+        if (session == null || !"SELLER".equals(session.getAttribute("role"))) {
+            resp.setStatus(403);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail("FORBIDDEN", "Seller role required")));
+            return;
+        }
+        Long sellerId = (Long) session.getAttribute("userId");
+
+        String pathInfo = req.getPathInfo();
+        if (pathInfo == null || pathInfo.length() < 2) {
+            resp.setStatus(400);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail("VALIDATION_ERROR", "Product id required in URL")));
+            return;
+        }
+        Long productId = Long.valueOf(pathInfo.substring(1));
+
+        try {
+            productService.deleteListing(sellerId, productId);
+            resp.setStatus(200);
+            resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.ok(null)));
+        } catch (ServiceException se) {
+            resp.setStatus(se.getCode().equals("NOT_FOUND") ? 404 : 500);
             resp.getWriter().write(JsonUtil.GSON.toJson(ApiResponse.fail(se.getCode(), se.getMessage())));
         }
     }

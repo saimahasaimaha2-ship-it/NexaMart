@@ -8,4 +8,5 @@ public interface OrderDAO {
     Order createOrderWithItems(Connection conn, Order order) throws Exception;
     List<Order> findByBuyer(Long buyerId) throws Exception;
     List<Order> findBySellerProducts(Long sellerId) throws Exception;
+    List<Order> findAll() throws Exception;
 }

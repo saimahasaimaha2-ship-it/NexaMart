@@ -87,6 +87,36 @@ public class ProductDAOImpl implements ProductDAO {
             if (updated == 0) throw new IllegalStateException("Insufficient stock for product " + productId);
         }
     }
+    @Override
+    public void update(Product p) throws Exception {
+        String sql = "UPDATE products SET name = ?, description = ?, price = ?, stock_qty = ?, category = ?, image_url = ? " +
+                     "WHERE id = ? AND seller_id = ?";
+        try (Connection conn = DataSourceListener.getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, p.getName());
+            ps.setString(2, p.getDescription());
+            ps.setBigDecimal(3, p.getPrice());
+            ps.setInt(4, p.getStockQty());
+            ps.setString(5, p.getCategory());
+            ps.setString(6, p.getImageUrl());
+            ps.setLong(7, p.getId());
+            ps.setLong(8, p.getSellerId());
+            int updated = ps.executeUpdate();
+            if (updated == 0) throw new IllegalStateException("Product not found or not owned by seller");
+        }
+    }
+
+    @Override
+    public void delete(Long id, Long sellerId) throws Exception {
+        String sql = "DELETE FROM products WHERE id = ? AND seller_id = ?";
+        try (Connection conn = DataSourceListener.getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.setLong(2, sellerId);
+            int deleted = ps.executeUpdate();
+            if (deleted == 0) throw new IllegalStateException("Product not found or not owned by seller");
+        }
+    }
 
     private Product map(ResultSet rs) throws SQLException {
         Product p = new Product();

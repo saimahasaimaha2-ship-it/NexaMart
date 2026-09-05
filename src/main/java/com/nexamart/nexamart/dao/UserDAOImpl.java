@@ -5,8 +5,10 @@ import com.nexamart.nexamart.model.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
+ 
 public class UserDAOImpl implements UserDAO {
 
     @Override
@@ -47,6 +49,18 @@ public class UserDAOImpl implements UserDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? Optional.of(map(rs)) : Optional.empty();
             }
+        }
+    }
+     
+    @Override
+    public List<User> findAll() throws Exception {
+        String sql = "SELECT id, name, email, password_hash, role, created_at FROM users ORDER BY id";
+        try (Connection conn = DataSourceListener.getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<User> users = new ArrayList<>();
+            while (rs.next()) users.add(map(rs));
+            return users;
         }
     }
 

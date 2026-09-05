@@ -9,4 +9,6 @@ public interface ProductDAO {
     Optional<Product> findById(Long id) throws Exception;
     List<Product> search(String keyword, String category) throws Exception;
     void decrementStock(Long productId, int qty) throws Exception;
+    void update(Product product) throws Exception;
+    void delete(Long id, Long sellerId) throws Exception;
 }
