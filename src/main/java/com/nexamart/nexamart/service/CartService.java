@@ -12,8 +12,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class CartService {
-    private final CartDAO cartDAO = new CartDAOImpl();
-    private final ProductDAO productDAO = new ProductDAOImpl();
+    private final CartDAO cartDAO;
+    private final ProductDAO productDAO;
+
+    public CartService() {
+        this.cartDAO = new CartDAOImpl();
+        this.productDAO = new ProductDAOImpl();
+    }
+
+    public CartService(CartDAO cartDAO, ProductDAO productDAO) {
+        this.cartDAO = cartDAO;
+        this.productDAO = productDAO;
+    }
 
     public CartItem addItem(Long userId, Long productId, int quantity) throws ServiceException {
         if (quantity <= 0) throw new ServiceException("VALIDATION_ERROR", "Quantity must be positive");

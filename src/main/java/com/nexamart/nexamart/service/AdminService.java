@@ -6,14 +6,25 @@ import com.nexamart.nexamart.exception.ServiceException;
 import com.nexamart.nexamart.model.Order;
 import com.nexamart.nexamart.model.Product;
 import com.nexamart.nexamart.model.User;
-import com.nexamart.nexamart.dto.UserResponseDTO;
 
 import java.util.List;
 
 public class AdminService {
-    private final UserDAO userDAO = new UserDAOImpl();
-    private final ProductDAO productDAO = new ProductDAOImpl();
-    private final OrderDAO orderDAO = new OrderDAOImpl();
+    private final UserDAO userDAO;
+    private final ProductDAO productDAO;
+    private final OrderDAO orderDAO;
+
+    public AdminService() {
+        this.userDAO = new UserDAOImpl();
+        this.productDAO = new ProductDAOImpl();
+        this.orderDAO = new OrderDAOImpl();
+    }
+
+    public AdminService(UserDAO userDAO, ProductDAO productDAO, OrderDAO orderDAO) {
+        this.userDAO = userDAO;
+        this.productDAO = productDAO;
+        this.orderDAO = orderDAO;
+    }
 
     public List<UserResponseDTO> listUsers() throws ServiceException {
         try {

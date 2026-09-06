@@ -18,9 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
-    private final CartDAO cartDAO = new CartDAOImpl();
-    private final ProductDAO productDAO = new ProductDAOImpl();
-    private final OrderDAO orderDAO = new OrderDAOImpl();
+    private final CartDAO cartDAO;
+    private final ProductDAO productDAO;
+    private final OrderDAO orderDAO;
+
+    public OrderService() {
+        this.cartDAO = new CartDAOImpl();
+        this.productDAO = new ProductDAOImpl();
+        this.orderDAO = new OrderDAOImpl();
+    }
+
+    public OrderService(CartDAO cartDAO, ProductDAO productDAO, OrderDAO orderDAO) {
+        this.cartDAO = cartDAO;
+        this.productDAO = productDAO;
+        this.orderDAO = orderDAO;
+    }
 
     // Places an order from the buyer's current cart via a mock payment confirmation.
     public Order checkout(Long buyerId) throws ServiceException {
