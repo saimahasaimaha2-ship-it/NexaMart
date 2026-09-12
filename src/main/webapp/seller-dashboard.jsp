@@ -22,7 +22,7 @@
 <div id="orderList"></div>
 
 <script>
-const currentSellerId = ${sessionScope.userId};
+const currentSellerId = ${empty sessionScope.userId ? 'null' : sessionScope.userId};
 
 async function createProduct() {
     const body = {
