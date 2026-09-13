@@ -15,7 +15,7 @@
 <!-- Chat Widget -->
 <button id="chatToggleBtn" onclick="toggleChat()" style="position:fixed; bottom:20px; right:20px; padding:12px 18px; border-radius:50px; background:#333; color:white; border:none; cursor:pointer; font-size:16px; z-index:1000;">💬 Chat</button>
 
-<div id="chatPanel" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; height:400px; border:1px solid #ccc; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.2); border-radius:8px; z-index:1000; display:flex; flex-direction:column;">
+<div id="chatPanel" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; height:400px; border:1px solid #ccc; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.2); border-radius:8px; z-index:1000; flex-direction:column;">
     <div style="background:#333; color:white; padding:10px; border-radius:8px 8px 0 0; font-weight:bold;">NexaMart Assistant</div>
     <div id="chatMessages" style="flex:1; overflow-y:auto; padding:10px; font-size:14px;"></div>
     <div style="display:flex; border-top:1px solid #ccc;">
