@@ -12,6 +12,18 @@
 <button onclick="checkout()">Checkout</button>
 <p id="msg"></p>
 
+<!-- Chat Widget -->
+<button id="chatToggleBtn" onclick="toggleChat()" style="position:fixed; bottom:20px; right:20px; padding:12px 18px; border-radius:50px; background:#333; color:white; border:none; cursor:pointer; font-size:16px; z-index:1000;">💬 Chat</button>
+
+<div id="chatPanel" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; height:400px; border:1px solid #ccc; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.2); border-radius:8px; z-index:1000; display:flex; flex-direction:column;">
+    <div style="background:#333; color:white; padding:10px; border-radius:8px 8px 0 0; font-weight:bold;">NexaMart Assistant</div>
+    <div id="chatMessages" style="flex:1; overflow-y:auto; padding:10px; font-size:14px;"></div>
+    <div style="display:flex; border-top:1px solid #ccc;">
+        <input id="chatInput" placeholder="Ask a question..." style="flex:1; border:none; padding:8px;" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button onclick="sendChatMessage()" style="border:none; background:#333; color:white; padding:8px 12px; cursor:pointer;">Send</button>
+    </div>
+</div>
+
 <script>
 async function loadProducts() {
     const q = document.getElementById('searchBox').value;
@@ -126,6 +138,56 @@ async function checkout() {
     const data = await res.json();
     document.getElementById('msg').innerText = data.success ? 'Order placed! ID ' + data.data.id : data.error.message;
     if (data.success) loadCart();
+}
+
+// Chat widget functions
+function toggleChat() {
+    const panel = document.getElementById('chatPanel');
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'flex';
+        if (document.getElementById('chatMessages').children.length === 0) {
+            addChatMessage('assistant', "Hi! I'm the NexaMart assistant. Ask me about accounts, selling, searching, checkout, payments, or reviews.");
+        }
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+function addChatMessage(sender, text) {
+    const messages = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.style.margin = '6px 0';
+    div.style.textAlign = sender === 'user' ? 'right' : 'left';
+    const bubble = document.createElement('span');
+    bubble.style.display = 'inline-block';
+    bubble.style.padding = '6px 10px';
+    bubble.style.borderRadius = '10px';
+    bubble.style.background = sender === 'user' ? '#333' : '#eee';
+    bubble.style.color = sender === 'user' ? 'white' : 'black';
+    bubble.style.maxWidth = '80%';
+    bubble.innerText = text;
+    div.appendChild(bubble);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    addChatMessage('user', message);
+    input.value = '';
+
+    try {
+        const res = await fetch('api/v1/chat', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        addChatMessage('assistant', data.success ? data.data.reply : data.error.message);
+    } catch (e) {
+        addChatMessage('assistant', "Sorry, I'm having trouble answering right now. Please try again later.");
+    }
 }
 
 loadProducts();
