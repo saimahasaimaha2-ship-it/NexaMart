@@ -21,6 +21,19 @@ A full-stack e-commerce marketplace built with Java Servlets, JSP, and a layered
 
 ---
 
+## Design Diagrams
+
+### ER Diagram
+![ER Diagram](docs/diagrams/er-diagram.png)
+
+### Use Case Diagram
+![Use Case Diagram](docs/diagrams/use-case-diagram.png)
+
+### Sequence Diagram (Place Order Flow)
+![Sequence Diagram](docs/diagrams/sequence-diagram.png)
+
+---
+
 ## Features
 
 - **Authentication** — Register/login with role-based access (Buyer, Seller, Admin), bcrypt password hashing, session-based auth
@@ -30,6 +43,7 @@ A full-stack e-commerce marketplace built with Java Servlets, JSP, and a layered
 - **Seller Dashboard** — Sellers can create, edit, and delete their own product listings, and view incoming orders for their products
 - **Admin Panel** — Admins can view all users, products, and orders, and remove products
 - **Reviews & Ratings** — Buyers can rate and review products they've purchased (1–5 stars + comment)
+- **AI Chatbot** — Floating assistant widget answering FAQ-style questions about accounts, selling, searching, checkout, and reviews
 - **Health Check** — `GET /api/v1/health` reports live DB connectivity status
 
 ---
@@ -55,6 +69,7 @@ A full-stack e-commerce marketplace built with Java Servlets, JSP, and a layered
 ## Architecture
 
 The app follows a layered MVC pattern:
+
     Browser (JSP + fetch/JS)
             │
             ▼
@@ -114,6 +129,12 @@ Test suite covers DAO-level tests (real in-memory H2) and Service-level tests (M
 
 ---
 
+## AI Chatbot
+
+A floating chat widget (bottom-right corner of the Products page) answers FAQ-style questions about the marketplace — account creation, selling products, searching, checkout, payments, and reviews. Built via a `ChatProvider` interface (so a real LLM API could be swapped in later) with a `MockChatProvider` default implementation, session-based rate limiting (10 messages/minute), input length capping, and in-memory response caching.
+
+---
+
 ## Deployment
 
 The app is containerized via a multi-stage `Dockerfile`:
@@ -139,6 +160,7 @@ Deployed on [Render.com](https://render.com) (free tier). On startup, the app au
 
 - Render's free tier has no persistent disk — the H2 database resets on every container restart. This is acceptable for a student/demo project but would need a persistent volume or managed DB for production use.
 - No pagination on product listings (fine at current data scale).
+- Chatbot uses canned FAQ responses (mock provider), not a live LLM API call.
 
 ---
 
