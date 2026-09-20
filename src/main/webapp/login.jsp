@@ -19,8 +19,18 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)
     });
     const data = await res.json();
-    if (data.success) { window.location.href = 'products.jsp'; }
-    else { document.getElementById('msg').innerText = data.error.message; }
+    if (data.success) {
+        const role = data.data.role;
+        if (role === 'SELLER') {
+            window.location.href = 'seller-dashboard.jsp';
+        } else if (role === 'ADMIN') {
+            window.location.href = 'admin-dashboard.jsp';
+        } else {
+            window.location.href = 'products.jsp';
+        }
+    } else {
+        document.getElementById('msg').innerText = data.error.message;
+    }
 });
 </script>
 </body>
