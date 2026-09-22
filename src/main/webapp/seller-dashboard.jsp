@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
-<head><title>Seller Dashboard — NexaMart</title></head>
+<head>
+<title>Seller Dashboard — NexaMart</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
 <body>
 <h2>Seller Dashboard</h2>
 <p id="msg"></p>

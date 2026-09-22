@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
-<head><title>Register — NexaMart</title></head>
+<head>
+<title>Register — NexaMart</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
 <body>
 <h2>Register</h2>
 <form id="registerForm">
