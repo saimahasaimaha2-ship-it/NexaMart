@@ -6,6 +6,15 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="navbar">
+    <a class="brand" href="products.jsp">NexaMart</a>
+    <div class="nav-links">
+        <a href="products.jsp">Shop</a>
+        <a href="login.jsp">Login</a>
+        <a href="register.jsp">Register</a>
+    </div>
+</div>
+<div class="page-content">
 <h2>Products</h2>
 <input id="searchBox" placeholder="Search...">
 <button onclick="loadProducts()">Search</button>
@@ -14,16 +23,17 @@
 <div id="cartList"></div>
 <button onclick="checkout()">Checkout</button>
 <p id="msg"></p>
+</div>
 
 <!-- Chat Widget -->
-<button id="chatToggleBtn" onclick="toggleChat()" style="position:fixed; bottom:20px; right:20px; padding:12px 18px; border-radius:50px; background:linear-gradient(135deg,#8b5cf6,#6d28d9); color:white; border:none; cursor:pointer; font-size:16px; z-index:1000; box-shadow:0 4px 14px rgba(139,92,246,0.4);">💬 Chat</button>
+<button id="chatToggleBtn" onclick="toggleChat()" style="position:fixed; bottom:20px; right:20px; padding:12px 18px; border-radius:50px; background:linear-gradient(135deg,#7c3aed,#4c1d95); color:white; border:none; cursor:pointer; font-size:16px; z-index:1000; box-shadow:0 4px 14px rgba(91,33,182,0.4);">💬 Chat</button>
 
-<div id="chatPanel" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; height:400px; border:1px solid #3a2e52; background:#1a1a1e; box-shadow:0 8px 24px rgba(0,0,0,0.5); border-radius:12px; z-index:1000; flex-direction:column;">
-    <div style="background:linear-gradient(135deg,#8b5cf6,#6d28d9); color:white; padding:12px; border-radius:12px 12px 0 0; font-weight:bold;">NexaMart Assistant</div>
+<div id="chatPanel" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; height:400px; border:1px solid #e4dcf5; background:white; box-shadow:0 8px 24px rgba(91,33,182,0.25); border-radius:14px; z-index:1000; flex-direction:column;">
+    <div style="background:linear-gradient(135deg,#7c3aed,#4c1d95); color:white; padding:12px; border-radius:14px 14px 0 0; font-weight:bold;">NexaMart Assistant</div>
     <div id="chatMessages" style="flex:1; overflow-y:auto; padding:10px; font-size:14px;"></div>
-    <div style="display:flex; border-top:1px solid #3a2e52;">
-        <input id="chatInput" placeholder="Ask a question..." style="flex:1; border:none; border-radius:0; padding:10px; margin:0; background:#1f1f24;" onkeydown="if(event.key==='Enter') sendChatMessage()">
-        <button onclick="sendChatMessage()" style="border:none; border-radius:0; background:#6d28d9; color:white; padding:10px 14px; cursor:pointer; margin:0;">Send</button>
+    <div style="display:flex; border-top:1px solid #e4dcf5;">
+        <input id="chatInput" placeholder="Ask a question..." style="flex:1; border:none; border-radius:0; padding:10px; margin:0;" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button onclick="sendChatMessage()" style="border:none; border-radius:0; background:#4c1d95; color:white; padding:10px 14px; cursor:pointer; margin:0; box-shadow:none;">Send</button>
     </div>
 </div>
 
@@ -51,7 +61,7 @@ async function loadProducts() {
         const reviewSection = document.createElement('div');
         reviewSection.id = 'reviews-' + p.id;
         reviewSection.style.display = 'none';
-        reviewSection.style.marginLeft = '20px';
+        reviewSection.style.marginTop = '10px';
         div.appendChild(reviewSection);
 
         list.appendChild(div);
@@ -165,8 +175,8 @@ function addChatMessage(sender, text) {
     bubble.style.display = 'inline-block';
     bubble.style.padding = '6px 10px';
     bubble.style.borderRadius = '10px';
-    bubble.style.background = sender === 'user' ? '#6d28d9' : '#2a2a30';
-    bubble.style.color = sender === 'user' ? 'white' : '#f2f0f5';
+    bubble.style.background = sender === 'user' ? '#4c1d95' : '#f5f3ff';
+    bubble.style.color = sender === 'user' ? 'white' : '#1f1235';
     bubble.style.maxWidth = '80%';
     bubble.innerText = text;
     div.appendChild(bubble);
