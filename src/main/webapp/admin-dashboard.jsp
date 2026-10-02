@@ -6,6 +6,14 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="navbar">
+    <a class="brand" href="products.jsp">NexaMart</a>
+    <div class="nav-links">
+        <a href="products.jsp">Shop</a>
+        <a href="admin-dashboard.jsp">Admin Panel</a>
+    </div>
+</div>
+<div class="page-content">
 <h2>Admin Dashboard</h2>
 <p id="msg"></p>
 
@@ -17,6 +25,7 @@
 
 <h3>All Orders</h3>
 <div id="orderList"></div>
+</div>
 
 <script>
 async function loadUsers() {

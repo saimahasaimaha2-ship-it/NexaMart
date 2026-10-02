@@ -6,6 +6,14 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="navbar">
+    <a class="brand" href="products.jsp">NexaMart</a>
+    <div class="nav-links">
+        <a href="products.jsp">Shop</a>
+        <a href="seller-dashboard.jsp">Seller Dashboard</a>
+    </div>
+</div>
+<div class="page-content">
 <h2>Seller Dashboard</h2>
 <p id="msg"></p>
 
@@ -23,6 +31,7 @@
 
 <h3>Incoming Orders</h3>
 <div id="orderList"></div>
+</div>
 
 <script>
 const currentSellerId = ${empty sessionScope.userId ? 'null' : sessionScope.userId};

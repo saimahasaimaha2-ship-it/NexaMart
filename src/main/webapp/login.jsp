@@ -6,13 +6,23 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h2>Login</h2>
+<div class="navbar">
+    <a class="brand" href="products.jsp">NexaMart</a>
+    <div class="nav-links">
+        <a href="products.jsp">Shop</a>
+        <a href="register.jsp">Register</a>
+    </div>
+</div>
+<div class="auth-wrap">
 <form id="loginForm">
+    <h2 style="margin-top:0;">Welcome back</h2>
+    <p style="color:var(--text-muted); margin-top:-10px; margin-bottom:18px; font-size:14px;">Login to continue shopping</p>
     <input name="email" type="email" placeholder="Email" required><br>
     <input name="password" type="password" placeholder="Password" required><br>
     <button type="submit">Login</button>
 </form>
-<p id="msg"></p>
+</div>
+<p id="msg" style="text-align:center;"></p>
 <script>
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
