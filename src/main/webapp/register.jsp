@@ -38,7 +38,12 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)
     });
     const data = await res.json();
-    document.getElementById('msg').innerText = data.success ? 'Registered! You can log in now.' : data.error.message;
+    if (data.success) {
+        document.getElementById('msg').innerText = 'Registered! Redirecting to login...';
+        setTimeout(() => { window.location.href = 'login.jsp'; }, 1200);
+    } else {
+        document.getElementById('msg').innerText = data.error.message;
+    }
 });
 </script>
 </body>

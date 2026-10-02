@@ -15,16 +15,20 @@
 </div>
 <div class="page-content">
 <h2>Seller Dashboard</h2>
-<p id="msg"></p>
+<p id="msg" style="text-align:center;"></p>
 
 <h3>Add New Product</h3>
-<input id="pName" placeholder="Name"><br>
-<input id="pDesc" placeholder="Description"><br>
-<input id="pPrice" placeholder="Price" type="number"><br>
-<input id="pStock" placeholder="Stock Qty" type="number"><br>
-<input id="pCategory" placeholder="Category"><br>
-<input id="pImage" placeholder="Image URL (e.g. https://...)"><br>
-<button onclick="createProduct()">Create Product</button>
+<div class="form-center-wrap">
+<form onsubmit="return false;">
+    <input id="pName" placeholder="Name"><br>
+    <input id="pDesc" placeholder="Description"><br>
+    <input id="pPrice" placeholder="Price" type="number"><br>
+    <input id="pStock" placeholder="Stock Qty" type="number"><br>
+    <input id="pCategory" placeholder="Category"><br>
+    <input id="pImage" placeholder="Image URL (e.g. https://...)"><br>
+    <button onclick="createProduct()">Create Product</button>
+</form>
+</div>
 
 <h3>My Products</h3>
 <div id="myProducts"></div>

@@ -289,3 +289,11 @@ th {
   background: var(--royal);
   color: white;
 }
+.form-center-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.form-center-wrap form {
+  max-width: 420px;
+}
