@@ -23,7 +23,7 @@
 <input id="pPrice" placeholder="Price" type="number"><br>
 <input id="pStock" placeholder="Stock Qty" type="number"><br>
 <input id="pCategory" placeholder="Category"><br>
-<input id="pImage" placeholder="Image URL"><br>
+<input id="pImage" placeholder="Image URL (e.g. https://...)"><br>
 <button onclick="createProduct()">Create Product</button>
 
 <h3>My Products</h3>
@@ -61,7 +61,18 @@ async function loadMyProducts() {
     list.innerHTML = '';
     (data.data || []).filter(p => p.sellerId === currentSellerId).forEach(p => {
         const div = document.createElement('div');
-        div.innerText = p.name + ' — ₹' + p.price + ' (' + p.stockQty + ' in stock) ';
+
+        const img = document.createElement('img');
+        img.className = 'my-product-thumb';
+        img.src = (p.imageUrl && p.imageUrl.trim() !== '') ? p.imageUrl : '';
+        img.alt = p.name;
+        img.onerror = function() { this.style.display = 'none'; };
+        if (!p.imageUrl || p.imageUrl.trim() === '') img.style.display = 'none';
+        div.appendChild(img);
+
+        const info = document.createElement('span');
+        info.innerText = p.name + ' — ₹' + p.price + ' (' + p.stockQty + ' in stock) ';
+        div.appendChild(info);
 
         const editBtn = document.createElement('button');
         editBtn.innerText = 'Edit Price';

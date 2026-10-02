@@ -45,26 +45,55 @@ async function loadProducts() {
     const list = document.getElementById('productList');
     list.innerHTML = '';
     (data.data || []).forEach(p => {
-        const div = document.createElement('div');
-        div.innerText = p.name + ' — ₹' + p.price + ' (' + p.stockQty + ' in stock) ';
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        if (p.imageUrl && p.imageUrl.trim() !== '') {
+            const img = document.createElement('img');
+            img.className = 'product-img';
+            img.src = p.imageUrl;
+            img.alt = p.name;
+            img.onerror = function() { this.outerHTML = '<div class="product-img-placeholder">🛍️</div>'; };
+            card.appendChild(img);
+        } else {
+            const ph = document.createElement('div');
+            ph.className = 'product-img-placeholder';
+            ph.innerText = '🛍️';
+            card.appendChild(ph);
+        }
+
+        const name = document.createElement('div');
+        name.className = 'product-name';
+        name.innerText = p.name;
+        card.appendChild(name);
+
+        const price = document.createElement('div');
+        price.className = 'product-price';
+        price.innerText = '₹' + p.price;
+        card.appendChild(price);
+
+        const stock = document.createElement('div');
+        stock.className = 'product-stock';
+        stock.innerText = p.stockQty + ' in stock';
+        card.appendChild(stock);
 
         const btn = document.createElement('button');
         btn.innerText = 'Add to cart';
         btn.onclick = () => addToCart(p.id);
-        div.appendChild(btn);
+        card.appendChild(btn);
 
         const reviewBtn = document.createElement('button');
         reviewBtn.innerText = 'Reviews';
         reviewBtn.onclick = () => toggleReviews(p.id);
-        div.appendChild(reviewBtn);
+        card.appendChild(reviewBtn);
 
         const reviewSection = document.createElement('div');
         reviewSection.id = 'reviews-' + p.id;
         reviewSection.style.display = 'none';
         reviewSection.style.marginTop = '10px';
-        div.appendChild(reviewSection);
+        card.appendChild(reviewSection);
 
-        list.appendChild(div);
+        list.appendChild(card);
     });
 }
 
@@ -153,7 +182,6 @@ async function checkout() {
     if (data.success) loadCart();
 }
 
-// Chat widget functions
 function toggleChat() {
     const panel = document.getElementById('chatPanel');
     if (panel.style.display === 'none' || panel.style.display === '') {
