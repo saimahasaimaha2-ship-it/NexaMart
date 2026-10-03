@@ -24,13 +24,132 @@ A full-stack e-commerce marketplace built with Java Servlets, JSP, and a layered
 ## Design Diagrams
 
 ### ER Diagram
-![ER Diagram](docs/diagrams/er-diagram.png)
+
+```mermaid
+erDiagram
+    USERS ||--o{ PRODUCTS : sells
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ CART_ITEMS : has
+    USERS ||--o{ REVIEWS : writes
+    PRODUCTS ||--o{ ORDER_ITEMS : "ordered as"
+    PRODUCTS ||--o{ CART_ITEMS : "added as"
+    PRODUCTS ||--o{ REVIEWS : receives
+    ORDERS ||--o{ ORDER_ITEMS : contains
+
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email UK
+        varchar password_hash
+        varchar role
+        timestamp created_at
+    }
+    PRODUCTS {
+        bigint id PK
+        bigint seller_id FK
+        varchar name
+        varchar description
+        decimal price
+        int stock_qty
+        varchar category
+        varchar image_url
+        timestamp created_at
+    }
+    ORDERS {
+        bigint id PK
+        bigint buyer_id FK
+        varchar status
+        decimal total_amount
+        timestamp created_at
+    }
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        int quantity
+        decimal unit_price
+    }
+    CART_ITEMS {
+        bigint id PK
+        bigint user_id FK
+        bigint product_id FK
+        int quantity
+        timestamp created_at
+    }
+    REVIEWS {
+        bigint id PK
+        bigint product_id FK
+        bigint user_id FK
+        int rating
+        varchar comment
+        timestamp created_at
+    }
+```
 
 ### Use Case Diagram
-![Use Case Diagram](docs/diagrams/use-case-diagram.png)
+
+```mermaid
+flowchart LR
+    Seller([Seller])
+    Buyer([Buyer])
+    Admin([Admin])
+
+    subgraph NexaMart
+        UC1(Register / Login)
+        UC2(Create / Edit / Delete Listing)
+        UC3(View Incoming Orders)
+        UC4(Browse / Search Products)
+        UC5(Add / Update / Remove Cart Items)
+        UC6(Checkout - Place Order)
+        UC7(View Order History)
+        UC8(Write Review / Rating)
+        UC9(View All Users and Orders)
+        UC10(Moderate / Remove Listings)
+        UC11(Ask Chatbot)
+    end
+
+    Seller --> UC1
+    Seller --> UC2
+    Seller --> UC3
+
+    Buyer --> UC1
+    Buyer --> UC4
+    Buyer --> UC5
+    Buyer --> UC6
+    Buyer --> UC7
+    Buyer --> UC8
+    Buyer --> UC11
+
+    Admin --> UC9
+    UC9 --> UC10
+    UC4 --> UC11
+```
 
 ### Sequence Diagram (Place Order Flow)
-![Sequence Diagram](docs/diagrams/sequence-diagram.png)
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as OrderServlet
+    participant Sv as OrderService
+    participant D as DAO Layer
+    participant DB as H2 Database
+
+    B->>S: POST /api/v1/checkout
+    S->>Sv: checkout(buyerId)
+    Sv->>D: findByUser(buyerId)
+    D->>DB: SELECT * FROM cart_items
+    DB-->>D: cart rows
+    Sv->>D: createOrderWithItems(order) [transaction]
+    D->>DB: INSERT INTO orders, order_items
+    Sv->>D: decrementStock(productId, qty) per item
+    D->>DB: UPDATE products SET stock_qty
+    Sv->>D: clearCart(buyerId)
+    D->>DB: DELETE FROM cart_items
+    D-->>DB: conn.commit()
+    Sv-->>S: Order object (CONFIRMED)
+    S-->>B: 200 OK { success:true, data: order }
+```
 
 ---
 
