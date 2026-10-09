@@ -16,7 +16,7 @@ public class DataSourceListener implements ServletContextListener {
 
     // ===== Seller 1 (maha@gmail.com) product images =====
     private static final String IMG_LAMP    = "https://images.unsplash.com/photo-1632712535563-c30adb9a9e2e?q=80&w=735&auto=format&fit=crop";
-    private static final String IMG_TEDDY   = "https://images.unsplash.com/photo-1613170812802-cb91fe53612b?q=80&w=687&auto=format&fit=crop";
+    private static final String IMG_TEDDY   = "https://rukmini1.flixcart.com/image/1500/1500/xif0q/stuffed-toy/o/2/c/removable-hoodie-teddy-bear-soft-toy-cute-plush-gift-for-girls-original-imahzkvqnncp9cb8.jpeg?q=70";
     private static final String IMG_LIGHTS  = "https://images.unsplash.com/photo-1767044565615-59db485c6f2b?q=80&w=1974&auto=format&fit=crop";
     private static final String IMG_CANDLE  = "https://plus.unsplash.com/premium_photo-1680098056984-0c397d284e74?q=80&w=687&auto=format&fit=crop";
     private static final String IMG_FRAME   = "https://images.unsplash.com/photo-1582053628662-c65b0e0544e9?q=80&w=687&auto=format&fit=crop";
