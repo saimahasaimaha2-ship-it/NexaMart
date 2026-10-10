@@ -15,7 +15,7 @@ cd NexaMart
 ```
 
 ## 2. Create your local config
-`config.properties` is excluded from version control, so a fresh clone does not have it. Create `src/main/resources/config.properties` with your database settings (JDBC URL pointing at the H2 TCP server on port 9092, plus user and password). See `.env.example` for the list of values.
+`config.properties` is not in the repo, so create `src/main/resources/config.properties` with the values listed in `.env.example`.
 
 ## 3. Start the H2 database
 Run this in its own terminal tab and leave it open (closing the tab stops the database):
@@ -44,3 +44,4 @@ Open http://localhost:8080/nexamart/ and check http://localhost:8080/nexamart/ap
 - Branch from `main` (`feature/<name>`), keep `main` deployable.
 - Use conventional commit messages: `feat:`, `fix:`, `test:`, `docs:`.
 - Add or update tests with each change; CI (`mvn -B clean verify`) must be green before merging.
+
